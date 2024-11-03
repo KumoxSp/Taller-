@@ -1,0 +1,18 @@
+salida="monitoreo_recursos.txt"
+
+
+tt=300
+inter=60
+
+
+echo -e "Tiempo\t% Total de CPU Libre\t% Memoria Libre\t% Disco Libre" > "$salida"
+
+for i in $(seq 0 $inter $tt) 
+do
+    cpu=$(top -bn1 | grep "Cpu(s)"|awk '{print 100 - $2}')
+
+    mem=$(free -h| grep Mem | awk '{print $4}')
+    disco=$(df -h / | grep / | awk '{print $4}')
+    echo -e "${i}s\t${cpu}\t${mem}\t${disco}" >> "$salida"
+    sleep "$inter"
+done
